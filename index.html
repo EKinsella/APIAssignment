@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!--<div id="root"></div>-->        
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+        <title>SWAPI Assignment</title>
+        <link rel="stylesheet" href="./styles.css"/>
+        <link rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"/>
+    </head>
+    <body>
+        <header>
+            <h1>Star Wars Table</h1>
+            <input type="text" id="searchName" onkeyup="mySearchFunction()" placeholder="Search for name" class="form-control">
+        </header>
+        <table id="people-table"
+        class="table table-bordered table-hover table-dark table-responsive-lg"
+        >
+        <tbody>
+            <tr scope="row">
+                <td>Name</td>
+                <td>Height</td>
+                <td>Mass</td>
+                <td>Created</td>   
+                <td>Edited</td> 
+                <td>Homeworld</td>
+            </tr>
+            <tr scope="row" id="root" onkeyup="fetch()">
+              <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <nav id="nav"></nav>
+        <main id="main"></main>
+        <footer id="footer"></footer>
+        <!--<script type="text/javascript" src="./app.js"></script>-->
+        <script type="module" src="./index.js"></script>
+        <script type="module" src="./app.js"></script>        
+        <script type="module" src="milsymbol-2.0.0/src/milsymbol.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.22.1/ramda.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)"></script>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.js"></script>-->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            function mySearchFunction()
+            {
+              var input, filter, table, tr, td, i, textValue;
+              input = document.getElementById("searchName");
+              table = document.getElementById("people-table");
+              tr = table.getElementsByTagName("tr");
+            
+              for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                  textValue = td.textContent || td.innerText;
+                }
+              }
+            }
+
+            var searchQuery = "";
+            loadData.onclick = () => {
+              function fetch () 
+              {
+                var url = "https://swapi.dev/api/people/";  
+                  $.ajax({
+                    method: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: function(data) {
+                      renderResults (data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                      console.log(textStatus);
+                    },
+                  });
+                };
+
+              function renderResults(data) 
+              {
+                for (var i = 0; i < data.results.length; i++) 
+                {
+                  var result = data.results[i];
+
+                  var resultsHTML =
+                  '<div class ="col-md-6">' +
+                    '<table id="people-table">' +
+                      "<tbody>" +
+                        "<tr>" +
+                          "<td>" + 
+                            result.name +
+                          "</td>" +
+                          "<td>" +
+                            result.height +
+                          "</td>" +
+                          "<td>" +
+                            result.mass +
+                          "</td>" +
+                          "<td>" +
+                            result.created +
+                          "</td>" +
+                          "<td>" +
+                            result.edited +
+                          "</td>" +
+                          "<td>" +
+                            result.homeland +
+                          "</td>"+
+                        "</tr>" +
+                      "</tbody>" +
+                    "</table>" +
+                  "</div>";
+
+                $(results).append(resultsHTML);
+              }
+              fetch(data);
+            }
+          };
+      </script>
+    </body>
+</html> 
